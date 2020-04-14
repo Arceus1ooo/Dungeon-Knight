@@ -1,5 +1,5 @@
 import pygame
-from PlayerController import Player
+from scripts.PlayerController import Player
 
 pygame.init()
 
@@ -33,24 +33,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # player movement
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and player.x > player.speed:
-        player.x -= player.speed
-        player.left = True
-        player.right = False
-    elif keys[pygame.K_RIGHT] and player.x < screenWidth - player.width - player.speed:
-        player.x += player.speed
-        player.left = False
-        player.right = True
-    else:
-        player.left = False
-        player.right = False
-        steps = 0
-    if keys[pygame.K_UP] and player.y > player.speed:
-        player.y -= player.speed
-    if keys[pygame.K_DOWN] and player.y < screenHeight - player.height - player.speed:
-        player.y += player.speed
+    player.movement()
     redrawWindow()
 
 pygame.quit()

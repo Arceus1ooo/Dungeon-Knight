@@ -40,7 +40,6 @@ class Player:
             win.blit(character, (self.x, self.y))
 
     def movement(self):
-        # player movement
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and self.x > self.speed:
             self.x -= self.speed
