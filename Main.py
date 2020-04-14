@@ -1,5 +1,5 @@
 import pygame
-from scripts.PlayerController import Player
+from PlayerController import Player
 
 pygame.init()
 
