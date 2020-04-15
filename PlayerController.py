@@ -1,6 +1,6 @@
 import pygame
 
-# GLOBAL VARIABLES (these declaration should be in every script)
+# GLOBAL VARIABLES (these declarations should be in every script)
 screenWidth = 500
 screenHeight = 480
 frameSpeed = 9
