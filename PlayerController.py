@@ -22,6 +22,7 @@ class Player:
         self.right = False
         self.steps = 0
         self.sprites = len(walkRight)
+        self.hitbox = (self.x, self.y, self.width, self.height)
 
     def redraw(self, win):  # player animation
         if self.steps + 1 > len(walkRight) * frameSpeed:
@@ -39,6 +40,8 @@ class Player:
                 win.blit(walkLeft[0], (self.x, self.y))
             else:
                 win.blit(character, (self.x, self.y))
+        self.hitbox = (self.x, self.y, self.width, self.height)
+        pygame.draw.rect(win, red, self.hitbox, 1)
 
     def movement(self):
         keys = pygame.key.get_pressed()
