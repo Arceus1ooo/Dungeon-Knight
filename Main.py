@@ -1,12 +1,8 @@
 import pygame
 from PlayerController import Player
+from GlobalVariables import *
 
 pygame.init()
-
-# GLOBAL VARIABLES (these declarations should be in every script)
-screenWidth = 500
-screenHeight = 480
-frameSpeed = 9
 
 # game window initialization
 timer = pygame.time.Clock()
