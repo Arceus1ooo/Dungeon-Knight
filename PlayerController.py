@@ -1,9 +1,5 @@
 import pygame
-
-# GLOBAL VARIABLES (these declarations should be in every script)
-screenWidth = 500
-screenHeight = 480
-frameSpeed = 9
+from GlobalVariables import *
 
 # player sprites
 character = pygame.image.load('player/standing.png')
@@ -37,7 +33,12 @@ class Player:
             win.blit(walkRight[int(self.steps / frameSpeed)], (self.x, self.y))
             self.steps += 1
         else:
-            win.blit(character, (self.x, self.y))
+            if self.right:
+                win.blit(walkRight[0], (self.x, self.y))
+            elif self.left:
+                win.blit(walkLeft[0], (self.x, self.y))
+            else:
+                win.blit(character, (self.x, self.y))
 
     def movement(self):
         keys = pygame.key.get_pressed()
@@ -50,10 +51,12 @@ class Player:
             self.left = False
             self.right = True
         else:
-            self.left = False
-            self.right = False
-            steps = 0
+            self.steps = 0
         if keys[pygame.K_UP] and self.y > self.speed:
             self.y -= self.speed
+            self.left = False
+            self.right = False
         if keys[pygame.K_DOWN] and self.y < screenHeight - self.height - self.speed:
             self.y += self.speed
+            self.left = False
+            self.right = False
