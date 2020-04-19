@@ -10,41 +10,56 @@ timer = pygame.time.Clock()
 window = pygame.display.set_mode((screenWidth, screenHeight))
 pygame.display.set_caption("Dungeon Knight")
 
+# object instantiation
 player = Player(300, 300, 64, 64)
-rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right')
+rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right', mainRoom)
+topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', mainRoom)
+leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', mainRoom)
+bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down', mainRoom)
+roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
+
+
+def render(objects=None):
+    if objects is None:
+        objects = []
+    for obj in objects:
+        if obj.x > 0 and obj.y > 0:
+            obj.visible = True
+        else:
+            obj.visible = False
 
 
 def redrawWindow():
-    background = pygame.image.load(map[mapX][mapY])
-    window.blit(background, (0, 0))
+    room = map[mapX][mapY]
+    window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
     player.redraw(window)
-    rightSwitch.redraw(window)
+    for switch in roomSwitches:
+        switch.redraw(window, room)
     pygame.display.update()  # This should always be last
-
-
-def detectCollision(obj1, obj2):
-    if (obj1.x + obj1.width) > obj2.x and obj1.x < (obj2.x + obj2.width):
-        if (obj1.y + obj1.height) > obj2.y and obj1.y < (obj2.y + obj2.height):
-            return True
-    else:
-        return False
 
 
 # MAIN GAME LOOP
 running = True
 while running:
     timer.tick(player.sprites * frameSpeed)
-
+    render(roomSwitches)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    collision = detectCollision(player, rightSwitch)
-    if collision and mapY < mapYMax:
-        mapY = rightSwitch.trigger(mapX, mapY)
-        player.x = 0
+    # Player collisions with room switches
+    for switch in roomSwitches:
+        switch.collision = switch.detectCollision(player)
+        if switch.collision:
+            if switch.direction == 'right' or switch.direction == 'left':
+                mapY = switch.trigger(mapY)
+                player.x = switch.postTrigger(player.width, player.height)
+            elif switch.direction == 'up' or switch.direction == 'down':
+                mapX = switch.trigger(mapX)
+                player.y = switch.postTrigger(player.width, player.height)
+            print("Map X: " + str(mapX) + ", Map Y: " + str(mapY))
+
     player.movement()
-    # print("Map X: " + str(mapX) + ", Map Y: " + str(mapY))
     redrawWindow()
 
 pygame.quit()

@@ -12,12 +12,20 @@ blue = (0, 0, 255)
 white = (255, 255, 255)
 black = (0, 0, 0)
 
-# The map
+# Map Initialization
 mainRoom = 'rooms/intro.jpg'
 room1 = 'rooms/ex1.jpg'
-map = [['null', 'null', 'null'],
-       ['null', mainRoom, room1],
-       ['null', 'null', 'null']]
+room2 = 'rooms/ex2.jpg'
+room3 = 'rooms/ex3.jpg'
+room4 = 'rooms/ex4.jpg'
+room5 = 'rooms/ex5.jpg'
+room6 = 'rooms/ex6.jpg'
+room7 = 'rooms/ex7.jpg'
+room8 = 'rooms/ex8.jpg'
+
+map = [[room1, room2, room3],
+       [room4, mainRoom, room5],
+       [room6, room7, room8]]
 # Setting start position
 mapX = 1
 mapY = 1

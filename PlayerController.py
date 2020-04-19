@@ -63,3 +63,7 @@ class Player:
             self.y += self.speed
             self.left = False
             self.right = False
+
+    def reset(self):
+        self.x = screenWidth / 2
+        self.y = screenHeight / 2
