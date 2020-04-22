@@ -46,6 +46,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                player.cooldown = 1
+                player.attacking = True
 
     # Player collisions with room switches
     for switch in roomSwitches:
