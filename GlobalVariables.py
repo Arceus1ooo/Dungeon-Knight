@@ -34,3 +34,5 @@ mapY = 1
 # (2,0) (2,1) (2,2)
 mapXMax = 2
 mapYMax = 2
+swordWidth = 5
+swordHeight = 4
