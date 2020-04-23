@@ -47,7 +47,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and player.cooldown == 0:
                 player.cooldown = 1
                 player.attacking = True
 
