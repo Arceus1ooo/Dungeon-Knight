@@ -2,6 +2,7 @@ import pygame
 from GlobalVariables import *
 from PlayerController import Player
 from Triggers import RoomSwitch
+from Enemy import Enemy
 
 pygame.init()
 
@@ -17,6 +18,9 @@ topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', mainRoom)
 leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', mainRoom)
 bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down', mainRoom)
 roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
+yeti = Enemy(20,200,64,64,'spr_ape_yeti.png')
+enemy_list = pygame.sprite.Group()
+enemy_list.add(yeti)
 
 
 def render(objects=None):
@@ -33,6 +37,9 @@ def redrawWindow():
     room = map[mapX][mapY]
     window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
     player.redraw(window)
+    enemy_list.draw(window)
+    for e in enemy_list:
+        e.moveTowardsPlayer(player)
     for switch in roomSwitches:
         switch.redraw(window, room)
     pygame.display.update()  # This should always be last
