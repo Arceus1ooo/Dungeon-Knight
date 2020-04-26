@@ -30,7 +30,10 @@ class Player:
         self.leftSword = Sword(self.x - swordWidth, self.y + self.height / 2, swordWidth, swordHeight)
         self.upSword = Sword(self.x + self.width / 2, self.y - swordWidth, swordHeight, swordWidth)
         self.downSword = Sword(self.x + self.width / 2, self.y + self.height, swordHeight, swordWidth)
+        self.swords = [self.rightSword, self.leftSword, self.upSword, self.downSword]
         self.temp = (self.direction,)
+        self.health = 5
+        self.attack = 1
 
     def redraw(self, win):  # player animation, called once per frame
         if self.cooldown > 0:
@@ -39,9 +42,9 @@ class Player:
             self.cooldown = 0
             self.attacking = False
 
+        self.swordDisplay(win)
         if self.attacking:
             self.speed = 0
-            self.swordDisplay(win)
         else:
             self.speed = 2
             self.switch = True
@@ -104,11 +107,9 @@ class Player:
                                        swordHeight, swordWidth + (self.cooldownMax - self.cooldown))
                 self.downSword.redraw(win)
 
-        if not self.attacking:
-            self.leftSword.redraw(win, False)
-            self.rightSword.redraw(win, False)
-            self.upSword.redraw(win, False)
-            self.downSword.redraw(win, False)
+        if self.attacking is False:
+            for sword in self.swords:
+                sword.redraw(win, False)
 
     def movement(self):
         keys = pygame.key.get_pressed()
@@ -138,16 +139,13 @@ class Sword:
         self.y = y
         self.width = width
         self.height = height
+        self.position = (self.x, self.y)
 
     def redraw(self, win, visible=True):
         if visible:
+            self.x = self.position[0]
+            self.y = self.position[1]
             pygame.draw.rect(win, black, (self.x, self.y, self.width, self.height))
         else:
-            pygame.draw.rect(win, green, (-1000, -1000, 0, 0))
-
-    def detectCollision(self, obj):
-        if (self.x + self.width) > obj.x and self.x < (obj.x + obj.width):
-            if (self.y + self.height) > obj.y and self.y < (obj.y + obj.height):
-                return True
-        else:
-            return False
+            self.x = -1000
+            self.y = -1000

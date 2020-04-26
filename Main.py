@@ -2,7 +2,7 @@ import pygame
 from GlobalVariables import *
 from PlayerController import Player
 from Triggers import RoomSwitch
-from Enemy import Enemy
+from EnemyController import Enemy
 
 pygame.init()
 
@@ -13,24 +13,16 @@ pygame.display.set_caption("Dungeon Knight")
 
 # object instantiation
 player = Player(300, 300, 64, 64)
-rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right', mainRoom)
-topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', mainRoom)
-leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', mainRoom)
-bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down', mainRoom)
+rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right', [mainRoom, room4])
+topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', [mainRoom, room7])
+leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', [mainRoom, room5])
+bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down', [mainRoom, room2])
 roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
-yeti = Enemy(20,200,64,64,'spr_ape_yeti.png')
+
+yeti = Enemy(20, 200, 64, 64, 'spr_ape_yeti.png')
 enemy_list = pygame.sprite.Group()
 enemy_list.add(yeti)
-
-
-def render(objects=None):
-    if objects is None:
-        objects = []
-    for obj in objects:
-        if obj.x > 0 and obj.y > 0:
-            obj.visible = True
-        else:
-            obj.visible = False
+enemies = [yeti]
 
 
 def redrawWindow():
@@ -40,6 +32,11 @@ def redrawWindow():
     enemy_list.draw(window)
     for e in enemy_list:
         e.moveTowardsPlayer(player)
+    for e in enemies:
+        if e.health == 0:
+            e.rect.x = -1000
+            e.rect.y = -1000
+            e.speed = 0
     for switch in roomSwitches:
         switch.redraw(window, room)
     pygame.display.update()  # This should always be last
@@ -49,7 +46,6 @@ def redrawWindow():
 running = True
 while running:
     timer.tick(player.sprites * frameSpeed)
-    render(roomSwitches)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

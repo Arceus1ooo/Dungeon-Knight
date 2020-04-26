@@ -4,24 +4,27 @@ from GlobalVariables import *
 
 # This trigger switches which room is displayed, i.e. player moves from room1 to room2
 class RoomSwitch:
-    def __init__(self, x, y, width, height, direction, room):
+    def __init__(self, x, y, width, height, direction, rooms):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.direction = direction  # What side of the room it's on
         self.collision = False
-        self.room = room
+        self.rooms = rooms
         self.position = (self.x, self.y)
-        self.visible = True
+        self.existence = 0
 
-    def redraw(self, win, room):
-        if self.room == room:
-            (xpos, ypos) = self.position
-            self.visible = True
-            pygame.draw.rect(win, red, (xpos, ypos, self.width, self.height), 1)
+    def redraw(self, win, mapRoom):
+        self.existence = 0
+        for room in self.rooms:
+            if room == mapRoom:
+                self.existence += 1
+        if self.existence > 0:
+            self.x = self.position[0]
+            self.y = self.position[1]
+            pygame.draw.rect(win, red, (self.x, self.y, self.width, self.height), 1)
         else:
-            self.visible = False
             self.x = -1000
             self.y = -1000
 
