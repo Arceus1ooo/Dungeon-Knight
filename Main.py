@@ -3,6 +3,7 @@ from GlobalVariables import *
 from PlayerController import Player
 from Triggers import RoomSwitch
 from EnemyController import Enemy
+from Obstacles import LWall
 
 pygame.init()
 
@@ -16,18 +17,23 @@ player = Player(300, 300, 64, 64)
 rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right', [mainRoom, room4, room2])
 topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', [mainRoom, room7, room6, room4, room8])
 leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', [mainRoom, room5, room3])
-bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down', [mainRoom, room2, room4, room1, room3, room5])
+bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down',
+                          [mainRoom, room2, room4, room1, room3, room5])
 roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
 yeti = Enemy(20, 200, 64, 64, 'spr_ape_yeti.png')
 enemy_list = pygame.sprite.Group()
 enemy_list.add(yeti)
 enemies = [yeti]
+topLeft = LWall(0, 0, 365, 250, 0.27, 0.39, allRooms, 'topLeft')
+topRight = LWall(screenWidth, 0, 365, 250, 0.27, 0.38, allRooms, 'topRight')
 
 
 def redrawWindow():
     room = map[mapX][mapY]
     window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
     player.redraw(window)
+    topLeft.redraw(window)
+    topRight.redraw(window)
     enemy_list.draw(window)
     for e in enemy_list:
         e.moveTowardsPlayer(player)
@@ -64,7 +70,8 @@ while running:
                 mapX = switch.trigger(mapX)
                 player.y = switch.postTrigger(player.width, player.height)
             print("Map X: " + str(mapX) + ", Map Y: " + str(mapY))
-
+    topLeft.detectCollision(player)
+    topRight.detectCollision(player)
     player.movement()
     redrawWindow()
 

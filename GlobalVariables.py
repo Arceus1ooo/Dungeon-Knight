@@ -34,5 +34,6 @@ mapY = 1
 # (2,0) (2,1) (2,2)
 mapXMax = 2
 mapYMax = 2
+allRooms = [room1, room2, room3, room4, room5, room6, room7, room8, mainRoom]
 swordWidth = 5
 swordHeight = 4

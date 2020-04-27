@@ -119,14 +119,14 @@ class Player:
         elif keys[pygame.K_RIGHT] and self.x < screenWidth - self.width - self.speed:
             self.x += self.speed
             self.direction = 'right'
-        else:
-            self.steps = 0
-        if keys[pygame.K_UP] and self.y > self.speed:
+        elif keys[pygame.K_UP] and self.y > self.speed:
             self.y -= self.speed
             self.direction = 'up'
-        if keys[pygame.K_DOWN] and self.y < screenHeight - self.height - self.speed:
+        elif keys[pygame.K_DOWN] and self.y < screenHeight - self.height - self.speed:
             self.y += self.speed
             self.direction = 'down'
+        if self.direction == 'up' or self.direction == 'down':
+            self.steps = 0
 
     def reset(self):
         self.x = screenWidth / 2
