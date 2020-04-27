@@ -1,9 +1,9 @@
 Project Contributions:
 Andy:
-Gavin: Player movement and attack action, animation, map creation, room switches
+Gavin: Player movement and attack action, animation, map creation, room switches, room boundaries
 Peter:
 
 Hours Worked:
 Andy:
-Gavin: ~15 hours
+Gavin: ~17 hours
 Peter:
