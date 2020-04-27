@@ -13,12 +13,11 @@ pygame.display.set_caption("Dungeon Knight")
 
 # object instantiation
 player = Player(300, 300, 64, 64)
-rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right', [mainRoom, room4])
-topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', [mainRoom, room7])
-leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', [mainRoom, room5])
-bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down', [mainRoom, room2])
+rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right', [mainRoom, room4, room2])
+topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', [mainRoom, room7, room6, room4, room8])
+leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', [mainRoom, room5, room3])
+bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down', [mainRoom, room2, room4, room1, room3])
 roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
-
 yeti = Enemy(20, 200, 64, 64, 'spr_ape_yeti.png')
 enemy_list = pygame.sprite.Group()
 enemy_list.add(yeti)
