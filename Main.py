@@ -28,7 +28,7 @@ enemies = [yeti]
 topLeft = LWall(0, 0, 365, 250, 0.27, 0.39, allRooms, 'topLeft')
 topRight = LWall(screenWidth, 0, 365, 250, 0.27, 0.38, allRooms, 'topRight')
 
-block1 = moveObj(400, 400, 25, 25, [mainRoom, room2, room4, room1, room3, room5])
+block1 = moveObj(400, 400, 25, 25, [mainRoom])
 movingBlocks = [block1]
 
 
@@ -49,7 +49,7 @@ def redrawWindow():
     for switch in roomSwitches:
         switch.redraw(window, room)
     for block in movingBlocks:
-        block.redraw(window)
+        block.redraw(window, room)
     pygame.display.update()  # This should always be last
 
 
