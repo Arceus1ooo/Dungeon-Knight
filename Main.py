@@ -4,6 +4,7 @@ from PlayerController import Player
 from Triggers import RoomSwitch
 from EnemyController import Enemy
 from Obstacles import LWall
+from ObjectMover import moveObj
 
 pygame.init()
 
@@ -14,10 +15,10 @@ pygame.display.set_caption("Dungeon Knight")
 
 # object instantiation
 player = Player(300, 300, 64, 64)
-rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 40, 'right', [mainRoom, room4, room2])
-topSwitch = RoomSwitch(screenWidth / 2, 0, 40, 5, 'up', [mainRoom, room7, room6, room4, room8])
-leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 40, 'left', [mainRoom, room5, room3])
-bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 40, 5, 'down',
+rightSwitch = RoomSwitch(screenWidth - 5, screenHeight / 2, 5, 100, 'right', [mainRoom, room4, room2])
+topSwitch = RoomSwitch(screenWidth / 2, 0, 100, 5, 'up', [mainRoom, room7, room6, room4, room8])
+leftSwitch = RoomSwitch(0, screenHeight / 2, 5, 100, 'left', [mainRoom, room5, room3])
+bottomSwitch = RoomSwitch(screenWidth / 2, screenHeight - 5, 100, 5, 'down',
                           [mainRoom, room2, room4, room1, room3, room5])
 roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
 yeti = Enemy(20, 200, 64, 64, 'spr_ape_yeti.png')
@@ -26,6 +27,9 @@ enemy_list.add(yeti)
 enemies = [yeti]
 topLeft = LWall(0, 0, 365, 250, 0.27, 0.39, allRooms, 'topLeft')
 topRight = LWall(screenWidth, 0, 365, 250, 0.27, 0.38, allRooms, 'topRight')
+
+block1 = moveObj(400, 400, 25, 25, [mainRoom, room2, room4, room1, room3, room5])
+movingBlocks = [block1]
 
 
 def redrawWindow():
@@ -44,6 +48,8 @@ def redrawWindow():
             e.speed = 0
     for switch in roomSwitches:
         switch.redraw(window, room)
+    for block in movingBlocks:
+        block.redraw(window)
     pygame.display.update()  # This should always be last
 
 
@@ -70,6 +76,10 @@ while running:
                 mapX = switch.trigger(mapX)
                 player.y = switch.postTrigger(player.width, player.height)
             print("Map X: " + str(mapX) + ", Map Y: " + str(mapY))
+
+    for block in movingBlocks:
+        block.checkCollision(player)
+    
     topLeft.detectCollision(player)
     topRight.detectCollision(player)
     player.movement()
