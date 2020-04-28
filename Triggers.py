@@ -23,7 +23,7 @@ class RoomSwitch:
         if self.existence > 0:
             self.x = self.position[0]
             self.y = self.position[1]
-            pygame.draw.rect(win, red, (self.x, self.y, self.width, self.height), 1)
+            pygame.draw.rect(win, black, (self.x, self.y, self.width, self.height), 0)
         else:
             self.x = -1000
             self.y = -1000

@@ -34,6 +34,7 @@ class Player:
         self.temp = (self.direction,)
         self.health = 5
         self.attack = 1
+        self.animate = False
 
     def redraw(self, win):  # player animation, called once per frame
         if self.cooldown > 0:
@@ -51,10 +52,10 @@ class Player:
 
         if self.steps + 1 > len(walkRight) * frameSpeed:
             self.steps = 0
-        if self.direction == 'left' and not self.attacking:
+        if self.direction == 'left' and not self.attacking and self.animate:
             win.blit(walkLeft[int(self.steps / frameSpeed)], (self.x, self.y))
             self.steps += 1
-        elif self.direction == 'right' and not self.attacking:
+        elif self.direction == 'right' and not self.attacking and self.animate:
             win.blit(walkRight[int(self.steps / frameSpeed)], (self.x, self.y))
             self.steps += 1
         else:
@@ -114,9 +115,11 @@ class Player:
     def movement(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and self.x > self.speed:
+            self.animate = True
             self.x -= self.speed
             self.direction = 'left'
         elif keys[pygame.K_RIGHT] and self.x < screenWidth - self.width - self.speed:
+            self.animate = True
             self.x += self.speed
             self.direction = 'right'
         elif keys[pygame.K_UP] and self.y > self.speed:
@@ -125,6 +128,8 @@ class Player:
         elif keys[pygame.K_DOWN] and self.y < screenHeight - self.height - self.speed:
             self.y += self.speed
             self.direction = 'down'
+        else:
+            self.animate = False
         if self.direction == 'up' or self.direction == 'down':
             self.steps = 0
 
