@@ -22,9 +22,8 @@ bottomSwitch = RoomSwitch(screenWidth / 2 - 75, screenHeight - 5, 150, 5, 'down'
 topSwitch = RoomSwitch(screenWidth / 2 - 75, 0, 150, 5, 'up', [mainRoom, room7, room6, room4, room8])
 roomSwitches = [rightSwitch, leftSwitch, topSwitch, bottomSwitch]
 
-yeti = Enemy(20, 200, 64, 64, 'spr_ape_yeti.png')
+yeti = Enemy(100, 300, 64, 64, 'spr_ape_yeti.png')
 enemy_list = pygame.sprite.Group()
-enemy_list.add(yeti)
 enemies = [yeti]
 
 topLeft = LWall(0, 0, 365, 250, 0.27, 0.39, 'topLeft')
@@ -50,13 +49,16 @@ def redrawWindow():
     window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
     player.redraw(window)
     enemy_list.draw(window)
+    if mapX == 1 and mapY == 1:
+        enemy_list.add(yeti)
+        enemy_list.draw(window)
+    else:
+        enemy_list.remove(yeti)
     for e in enemy_list:
         e.moveTowardsPlayer(player)
     for e in enemies:
         if e.health == 0:
-            e.rect.x = -1000
-            e.rect.y = -1000
-            e.speed = 0
+            enemy_list.remove(Enemy)
     for switch in roomSwitches:
         switch.redraw(window, room)
     for block in movingBlocks:
