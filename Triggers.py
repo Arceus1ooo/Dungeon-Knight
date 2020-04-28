@@ -14,6 +14,7 @@ class RoomSwitch:
         self.rooms = rooms
         self.position = (self.x, self.y)
         self.existence = 0
+        self.alpha = 255
 
     def redraw(self, win, mapRoom):
         self.existence = 0
@@ -21,17 +22,23 @@ class RoomSwitch:
             if room == mapRoom:
                 self.existence += 1
         if self.existence > 0:
-            self.x = self.position[0]
-            self.y = self.position[1]
-            pygame.draw.rect(win, black, (self.x, self.y, self.width, self.height), 0)
+            self.alpha = 255
+            s = pygame.Surface((self.width, self.height))
+            s.set_alpha(self.alpha)
+            s.fill(gray)
+            win.blit(s, (self.x, self.y))
         else:
-            self.x = -1000
-            self.y = -1000
+            self.alpha = 0
+            s = pygame.Surface((self.width, self.height))
+            s.set_alpha(self.alpha)
+            s.fill(gray)
+            win.blit(s, (self.x, self.y))
 
     def detectCollision(self, obj):
         if (self.x + self.width) > obj.x and self.x < (obj.x + obj.width):
             if (self.y + self.height) > obj.y and self.y < (obj.y + obj.height):
-                return True
+                if self.alpha == 255:
+                    return True
         else:
             return False
 

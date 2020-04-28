@@ -16,12 +16,13 @@ pygame.display.set_caption("Dungeon Knight")
 # object instantiation
 player = Player(300, 300, 64, 64)
 
-rightSwitch = RoomSwitch(screenWidth - 6, (screenHeight / 2) - 90, 5, 138, 'right', [mainRoom, room4, room2])
-topSwitch = RoomSwitch((screenWidth / 2) - 115, 1, 226, 5, 'up', [mainRoom, room7, room6, room4, room8])
-leftSwitch = RoomSwitch(1, (screenHeight / 2) - 90, 5, 145, 'left', [mainRoom, room5, room3])
-bottomSwitch = RoomSwitch((screenWidth / 2) - 115, screenHeight - 6, 226, 5, 'down',
-                          [mainRoom, room2, room4, room1, room5])
-roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
+upperRightSwitch = RoomSwitch(screenWidth - 5, (screenHeight / 2) - 75, 5, 100, 'right', [room2, room4])
+upperLeftSwitch = RoomSwitch(0, (screenHeight / 2) - 75, 5, 100, 'left', [mainRoom, room3])
+lowerLeftSwitch = RoomSwitch(0, (screenHeight / 2) + 5, 5, 100, 'left', [room5])
+lowerRightSwitch = RoomSwitch(screenWidth - 5, (screenHeight / 2) + 5, 5, 100, 'right', [mainRoom])
+bottomSwitch = RoomSwitch(screenWidth / 2 - 75, screenHeight - 5, 150, 5, 'down',[mainRoom, room1, room2, room4, room5])
+topSwitch = RoomSwitch(screenWidth / 2 - 75, 0, 150, 5, 'up', [mainRoom, room7, room6, room4, room8])
+roomSwitches = [upperRightSwitch, upperLeftSwitch, lowerLeftSwitch, lowerRightSwitch, topSwitch, bottomSwitch]
 
 yeti = Enemy(20, 200, 64, 64, 'spr_ape_yeti.png')
 enemy_list = pygame.sprite.Group()
