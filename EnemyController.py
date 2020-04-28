@@ -21,7 +21,7 @@ class Enemy(pygame.sprite.Sprite):
         self.width = width
         self.height = height
         self.counter = 0
-        self.speed = 2
+        self.speed = 1
         self.health = 2
         self.attack = 1
 
