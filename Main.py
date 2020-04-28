@@ -3,7 +3,7 @@ from GlobalVariables import *
 from PlayerController import Player
 from Triggers import RoomSwitch
 from EnemyController import Enemy
-from Obstacles import LWall
+from Obstacles import LWall, Barricade
 from ObjectMover import moveObj
 
 pygame.init()
@@ -20,7 +20,7 @@ rightSwitch = RoomSwitch(screenWidth - 6, (screenHeight / 2) - 90, 5, 138, 'righ
 topSwitch = RoomSwitch((screenWidth / 2) - 115, 1, 226, 5, 'up', [mainRoom, room7, room6, room4, room8])
 leftSwitch = RoomSwitch(1, (screenHeight / 2) - 90, 5, 145, 'left', [mainRoom, room5, room3])
 bottomSwitch = RoomSwitch((screenWidth / 2) - 115, screenHeight - 6, 226, 5, 'down',
-                          [mainRoom, room2, room4, room1, room3, room5])
+                          [mainRoom, room2, room4, room1, room5])
 roomSwitches = [leftSwitch, rightSwitch, topSwitch, bottomSwitch]
 
 yeti = Enemy(20, 200, 64, 64, 'spr_ape_yeti.png')
@@ -28,11 +28,19 @@ enemy_list = pygame.sprite.Group()
 enemy_list.add(yeti)
 enemies = [yeti]
 
-topLeft = LWall(0, 0, 365, 250, 0.27, 0.39, allRooms, 'topLeft')
-topRight = LWall(screenWidth, 0, 365, 250, 0.27, 0.38, allRooms, 'topRight')
-bottomLeft = LWall(0, screenHeight, 365, 295, 0.27, 0.2, allRooms, 'bottomLeft')
-bottomRight = LWall(screenWidth, screenHeight, 365, 295, 0.25, 0.2, allRooms, 'bottomRight')
-walls = [topLeft, topRight, bottomLeft, bottomRight]
+topLeft = LWall(0, 0, 365, 250, 0.27, 0.39, 'topLeft')
+topRight = LWall(screenWidth, 0, 365, 250, 0.27, 0.38, 'topRight')
+bottomLeft = LWall(0, screenHeight, 365, 295, 0.27, 0.2, 'bottomLeft')
+bottomRight = LWall(screenWidth, screenHeight, 365, 295, 0.25, 0.2, 'bottomRight')
+leftWall = Barricade(0, topLeft.y + topLeft.height, topLeft.scaledWidth, bottomLeft.y - (topLeft.y + topLeft.height),
+                     [room6, room4, room1, room7, room2, room8])
+topWall = Barricade(topLeft.x + topLeft.width, 0, topRight.x - (topLeft.x + topLeft.width), topLeft.scaledHeight,
+                    [room1, room2, room3, room5])
+rightWall = Barricade(screenWidth - bottomRight.scaledWidth, topLeft.y + topLeft.height, topLeft.scaledWidth,
+                      bottomLeft.y - (topLeft.y + topLeft.height), [room6, room1, room7, room8, room5, room3])
+bottomWall = Barricade(topLeft.x + topLeft.width, screenHeight - bottomRight.scaledHeight,
+                       topRight.x - (topLeft.x + topLeft.width), topLeft.scaledHeight, [room6, room7, room8, room3])
+walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWall, bottomWall]
 
 block1 = moveObj(400, 400, 25, 25, [mainRoom])
 movingBlocks = [block1]
@@ -55,7 +63,7 @@ def redrawWindow():
     for block in movingBlocks:
         block.redraw(window, room)
     for wall in walls:
-        wall.redraw(window)
+        wall.redraw(window, room)
     pygame.display.update()  # This should always be last
 
 
@@ -85,7 +93,7 @@ while running:
 
     for block in movingBlocks:
         block.checkCollision(player)
-    
+
     for wall in walls:
         wall.detectCollision(player)
     player.movement()
