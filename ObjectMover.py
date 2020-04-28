@@ -10,11 +10,12 @@ class moveObj:
         self.y = y
         self.width = width
         self.height = height
-        self.collision = False
+        self.direction = ""
         self.rooms = rooms
         self.position = [self.x, self.y]
         self.existence = 0
         self.alpha = 255
+        self.speed = 2
 
     def redraw(self, win, roomNum):
         self.existence = 0
@@ -39,13 +40,18 @@ class moveObj:
             if (self.y + self.height) > obj.y and self.y < (obj.y + obj.height):
                 if self.alpha == 255:
                     if obj.direction == 'right' and self.x < screenWidth - self.width:
-                        self.x += obj.speed
+                        self.direction = "right"
+                        self.x += self.speed
                     elif obj.direction == 'left' and self.x > 0:
-                        self.x -= obj.speed
+                        self.direction = "left"
+                        self.x -= self.speed
                     elif obj.direction == 'up' and self.y > 0:
-                        self.y -= obj.speed
+                        self.direction = "up"
+                        self.y -= self.speed
                     elif obj.direction == 'down' and self.y < screenHeight - self.height:
-                        self.y += obj.speed
+                        self.direction = "down"
+                        self.y += self.speed
                     return True
         else:
             return False
+
