@@ -4,7 +4,6 @@ from PlayerController import Player
 from Obstacles import LWall
 
 
-
 class moveObj:
     def __init__(self, x, y, width, height, rooms):
         self.x = x
@@ -31,7 +30,6 @@ class moveObj:
             s.set_alpha(0)
             s.fill(red)
             win.blit(s, (self.x, self.y))
-                
 
     def checkCollision(self, obj):
         if (self.x + self.width) > obj.x and self.x < (obj.x + obj.width):
@@ -47,7 +45,3 @@ class moveObj:
                 return True
         else:
             return False
-
-    
-        
-        
