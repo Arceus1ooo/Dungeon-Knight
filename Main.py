@@ -45,6 +45,9 @@ walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWal
 block1 = moveObj(400, 400, 25, 25, [mainRoom])
 movingBlocks = [block1]
 
+puzzle1 = puzzle(400, 150, 10, 70, 100, 200, [room5])
+puzzles = [puzzle1]
+
 
 def redrawWindow():
     room = map[mapX][mapY]
@@ -65,6 +68,8 @@ def redrawWindow():
         javelin.redraw(window)
     for switch in roomSwitches:
         switch.redraw(window, room)
+    for puzzle in puzzles:
+        puzzle.redraw(window, room)
     for block in movingBlocks:
         block.redraw(window, room)
     for wall in walls:
@@ -98,6 +103,14 @@ while running:
 
     for block in movingBlocks:
         block.checkCollision(player)
+    for w in puzzles:
+        w.wallCollision(player)
+        for block in movingBlocks:
+            w.wallCollision(block)
+    for p in puzzles:
+        p.buttonPress(player)
+        for block in movingBlocks:
+            p.buttonPress(block)
     for wall in walls:
         wall.detectCollision(player)
         wall.detectCollision(block)
