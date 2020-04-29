@@ -85,10 +85,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and len(javelins) == 0:
-                javelins.append(
-                    Javelin(player.x + player.width / 2, player.y + player.height / 2, pygame.mouse.get_pos()))
+        elif event.type == pygame.MOUSEBUTTONDOWN and len(javelins) == 0:
+            javelins.append(
+                Javelin(player.x + player.width / 2, player.y + player.height / 2, pygame.mouse.get_pos()))
 
     # Player collisions with room switches
     for switch in roomSwitches:
