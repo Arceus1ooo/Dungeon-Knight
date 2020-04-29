@@ -1,6 +1,6 @@
 import pygame
 from GlobalVariables import *
-from PlayerController import Player
+from PlayerController import Player, Javelin
 from Triggers import RoomSwitch
 from EnemyController import Enemy
 from Obstacles import LWall, Barricade
@@ -15,10 +15,12 @@ pygame.display.set_caption("Dungeon Knight")
 
 # object instantiation
 player = Player(300, 300, 64, 64)
+javelins = []
 
 rightSwitch = RoomSwitch(screenWidth - 5, (screenHeight / 2) - 75, 5, 100, 'right', [mainRoom, room2, room4])
 leftSwitch = RoomSwitch(0, (screenHeight / 2) - 75, 5, 100, 'left', [mainRoom, room3, room5])
-bottomSwitch = RoomSwitch(screenWidth / 2 - 75, screenHeight - 5, 150, 5, 'down',[mainRoom, room1, room2, room4, room5])
+bottomSwitch = RoomSwitch(screenWidth / 2 - 75, screenHeight - 5, 150, 5, 'down',
+                          [mainRoom, room1, room2, room4, room5])
 topSwitch = RoomSwitch(screenWidth / 2 - 75, 0, 150, 5, 'up', [mainRoom, room7, room6, room4, room8])
 roomSwitches = [rightSwitch, leftSwitch, topSwitch, bottomSwitch]
 
@@ -30,14 +32,14 @@ topLeft = LWall(0, 0, 365, 250, 0.27, 0.39, 'topLeft')
 topRight = LWall(screenWidth, 0, 365, 250, 0.27, 0.38, 'topRight')
 bottomLeft = LWall(0, screenHeight, 365, 295, 0.27, 0.2, 'bottomLeft')
 bottomRight = LWall(screenWidth, screenHeight, 365, 295, 0.25, 0.2, 'bottomRight')
-leftWall = Barricade(0, topLeft.y + topLeft.height, topLeft.scaledWidth, bottomLeft.y - (topLeft.y + topLeft.height),
+leftWall = Barricade(0, topLeft.y + topLeft.height, topLeft.scaledWidth, topLeft.scaledHeight + 40, gray,
                      [room6, room4, room1, room7, room2, room8])
-topWall = Barricade(topLeft.x + topLeft.width, 0, topRight.x - (topLeft.x + topLeft.width), topLeft.scaledHeight,
+topWall = Barricade(topLeft.x + topLeft.width, 0, topLeft.scaledWidth + 135, topLeft.scaledHeight, gray,
                     [room1, room2, room3, room5])
-rightWall = Barricade(screenWidth - bottomRight.scaledWidth, topLeft.y + topLeft.height, topLeft.scaledWidth,
-                      bottomLeft.y - (topLeft.y + topLeft.height), [room6, room1, room7, room8, room5, room3])
+rightWall = Barricade(screenWidth - bottomRight.scaledWidth, topRight.y + topRight.height, topRight.scaledWidth,
+                      topRight.scaledHeight + 40, gray, [room6, room1, room7, room8, room5, room3])
 bottomWall = Barricade(topLeft.x + topLeft.width, screenHeight - bottomRight.scaledHeight,
-                       topRight.x - (topLeft.x + topLeft.width), topLeft.scaledHeight, [room6, room7, room8, room3])
+                       bottomLeft.scaledWidth + 135, topLeft.scaledHeight, gray, [room6, room7, room8, room3])
 walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWall, bottomWall]
 
 block1 = moveObj(400, 400, 25, 25, [mainRoom])
@@ -59,6 +61,8 @@ def redrawWindow():
     for e in enemies:
         if e.health == 0:
             enemy_list.remove(Enemy)
+    for javelin in javelins:
+        javelin.redraw(window)
     for switch in roomSwitches:
         switch.redraw(window, room)
     for block in movingBlocks:
@@ -76,9 +80,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and player.cooldown == 0:
-                player.cooldown = 1
-                player.attacking = True
+            if event.key == pygame.K_SPACE and len(javelins) == 0:
+                javelins.append(
+                    Javelin(player.x + player.width / 2, player.y + player.height / 2, pygame.mouse.get_pos()))
 
     # Player collisions with room switches
     for switch in roomSwitches:
@@ -94,11 +98,12 @@ while running:
 
     for block in movingBlocks:
         block.checkCollision(player)
-
-
     for wall in walls:
         wall.detectCollision(player)
         wall.detectCollision(block)
+    for javelin in javelins:
+        if javelin.visible is False:
+            javelins.pop()
     player.movement()
     redrawWindow()
 

@@ -49,11 +49,12 @@ class LWall:
 
 
 class Barricade:
-    def __init__(self, x, y, width, height, rooms):
+    def __init__(self, x, y, width, height, color, rooms):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
+        self.color = color
         self.rooms = rooms
         self.existence = 0
         self.position = (self.x, self.y)
@@ -80,7 +81,7 @@ class Barricade:
         if self.existence > 0:
             self.x = self.position[0]
             self.y = self.position[1]
-            pygame.draw.rect(win, gray, (self.x, self.y, self.width, self.height), 1)
+            pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 1)
         else:
             self.x = -1000
             self.y = -1000

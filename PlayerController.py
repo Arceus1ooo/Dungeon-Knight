@@ -1,5 +1,6 @@
 import pygame
 from GlobalVariables import *
+import math
 
 # player sprites
 character = pygame.image.load('player/standing.png')
@@ -22,33 +23,17 @@ class Player:
         self.steps = 0
         self.sprites = len(walkRight)
         self.hitbox = (self.x, self.y, self.width, self.height)
-        self.cooldown = 0
-        self.cooldownMax = 60
         self.attacking = False
-        self.switch = True
-        self.rightSword = Sword(self.x + self.width, self.y + self.height / 2, swordWidth, swordHeight)
-        self.leftSword = Sword(self.x - swordWidth, self.y + self.height / 2, swordWidth, swordHeight)
-        self.upSword = Sword(self.x + self.width / 2, self.y - swordWidth, swordHeight, swordWidth)
-        self.downSword = Sword(self.x + self.width / 2, self.y + self.height, swordHeight, swordWidth)
-        self.swords = [self.rightSword, self.leftSword, self.upSword, self.downSword]
         self.temp = (self.direction,)
         self.health = 5
         self.attack = 1
         self.animate = False
 
     def redraw(self, win):  # player animation, called once per frame
-        if self.cooldown > 0:
-            self.cooldown += 1
-        if self.cooldown > self.cooldownMax:
-            self.cooldown = 0
-            self.attacking = False
-
-        self.swordDisplay(win)
         if self.attacking:
             self.speed = 0
         else:
             self.speed = 2
-            self.switch = True
 
         if self.steps + 1 > len(walkRight) * frameSpeed:
             self.steps = 0
@@ -67,50 +52,6 @@ class Player:
                 win.blit(character, (self.x, self.y))
         self.hitbox = (self.x, self.y, self.width, self.height)
         pygame.draw.rect(win, red, self.hitbox, 1)
-
-    def swordDisplay(self, win):
-        if self.switch:
-            self.temp = (self.direction,)
-            self.switch = False
-
-        if self.cooldown <= self.cooldownMax / 2:  # extend sword
-            if self.temp[0] == 'right' and self.attacking:
-                self.rightSword = Sword(self.x + self.width, self.y + self.height / 2,
-                                        swordWidth + self.cooldown, swordHeight)
-                self.rightSword.redraw(win)
-            elif self.temp[0] == 'left' and self.attacking:
-                self.leftSword = Sword(self.x - self.cooldown - 5, self.y + self.height / 2,
-                                       swordWidth + self.cooldown, swordHeight)
-                self.leftSword.redraw(win)
-            elif self.temp[0] == 'up' and self.attacking:
-                self.upSword = Sword(self.x + self.width / 2, self.y - self.cooldown - 5,
-                                     swordHeight, swordWidth + self.cooldown)
-                self.upSword.redraw(win)
-            elif self.temp[0] == 'down' and self.attacking:
-                self.downSword = Sword(self.x + self.width / 2, self.y + self.height,
-                                       swordHeight, swordWidth + self.cooldown)
-                self.downSword.redraw(win)
-        else:  # retract sword
-            if self.temp[0] == 'right' and self.attacking:
-                self.rightSword = Sword(self.x + self.width, self.y + self.height / 2,
-                                        swordWidth + (self.cooldownMax - self.cooldown), swordHeight)
-                self.rightSword.redraw(win)
-            elif self.temp[0] == 'left' and self.attacking:
-                self.leftSword = Sword(self.x - (self.cooldownMax - self.cooldown) - 5, self.y + self.height / 2,
-                                       swordWidth + (self.cooldownMax - self.cooldown), swordHeight)
-                self.leftSword.redraw(win)
-            elif self.temp[0] == 'up' and self.attacking:
-                self.upSword = Sword(self.x + self.width / 2, self.y - (self.cooldownMax - self.cooldown) - 5,
-                                     swordHeight, swordWidth + (self.cooldownMax - self.cooldown))
-                self.upSword.redraw(win)
-            elif self.temp[0] == 'down' and self.attacking:
-                self.downSword = Sword(self.x + self.width / 2, self.y + self.height,
-                                       swordHeight, swordWidth + (self.cooldownMax - self.cooldown))
-                self.downSword.redraw(win)
-
-        if self.attacking is False:
-            for sword in self.swords:
-                sword.redraw(win, False)
 
     def movement(self):
         keys = pygame.key.get_pressed()
@@ -138,19 +79,27 @@ class Player:
         self.y = screenHeight / 2
 
 
-class Sword:
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.position = (self.x, self.y)
+class Javelin:
+    def __init__(self, x, y, mousePos):
+        self.speed = 8
+        self.image = pygame.image.load('javelin.jpg')
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.position = (self.rect.x, self.rect.y)
+        self.mousePos = mousePos
+        self.visible = True
+        self.direction = pygame.math.Vector2(self.mousePos[0] - self.rect.x, self.mousePos[1] - self.rect.y)
+        self.angle = (180 / math.pi) * math.atan2(self.direction.x, self.direction.y) + 180
+        self.image = pygame.transform.rotate(self.image, int(self.angle))
+        self.rect = self.image.get_rect(center=self.position)
 
-    def redraw(self, win, visible=True):
-        if visible:
-            self.x = self.position[0]
-            self.y = self.position[1]
-            pygame.draw.rect(win, black, (self.x, self.y, self.width, self.height))
+    def redraw(self, win):
+        self.direction = pygame.math.Vector2(self.mousePos[0] - self.rect.x, self.mousePos[1] - self.rect.y)
+        if self.direction.x <= 2 and self.direction.y <= 2:
+            self.visible = False
         else:
-            self.x = -1000
-            self.y = -1000
+            self.direction.normalize()
+            self.direction.scale_to_length(self.speed)
+            self.rect.move_ip(self.direction)
+            win.blit(self.image, (self.rect.x, self.rect.y))
