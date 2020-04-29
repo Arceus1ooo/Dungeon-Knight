@@ -5,6 +5,7 @@ from Triggers import RoomSwitch
 from EnemyController import Enemy
 from Obstacles import LWall, Barricade
 from ObjectMover import moveObj
+from Puzzle import puzzle
 
 pygame.init()
 
@@ -42,7 +43,7 @@ bottomWall = Barricade(topLeft.x + topLeft.width, screenHeight - bottomRight.sca
                        bottomLeft.scaledWidth + 135, topLeft.scaledHeight, gray, [room6, room7, room8, room3])
 walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWall, bottomWall]
 
-block1 = moveObj(400, 400, 25, 25, [mainRoom])
+block1 = moveObj(400, 400, 25, 25, [room5])
 movingBlocks = [block1]
 
 puzzle1 = puzzle(400, 150, 10, 70, 100, 200, [room5])
