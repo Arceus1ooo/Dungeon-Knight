@@ -160,6 +160,17 @@ while running:
     for javelin in javelins:
         if javelin.visible is False:
             javelins.pop()
+    for x, y, width, height in bottomLeft.components:
+        if (x + width) > player.x and x < (player.x + player.width):
+            if (y + height) > player.y and y < (player.y + player.height):
+                if player.direction == 'up':
+                    player.y += player.speed
+                elif player.direction == 'down':
+                    player.y -= player.speed
+                elif player.direction == 'left':
+                    player.x += player.speed
+                else:
+                    player.x -= player.speed    
     player.movement()
     redrawWindow()
 
