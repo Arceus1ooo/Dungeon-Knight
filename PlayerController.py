@@ -28,6 +28,7 @@ class Player:
         self.health = 5
         self.attack = 1
         self.animate = False
+        self.alpha = 255
 
     def redraw(self, win):  # player animation, called once per frame
         if self.attacking:
