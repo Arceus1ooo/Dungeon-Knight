@@ -22,7 +22,7 @@ class LWall:
             self.components.append((self.x - self.scaledWidth, self.y, self.scaledWidth, self.height))
         elif self.location == 'bottomLeft':
             self.components.append((self.x, self.y - self.height, self.scaledWidth, self.height))
-            self.components.append((self.x, self.y - self.scaledHeight, self.width, self.height))
+            self.components.append((self.x, self.y - self.scaledHeight, self.width, self.scaledHeight))
         else:
             self.components.append((self.x - self.width, self.y - self.scaledHeight, self.width, self.scaledHeight))
             self.components.append((self.x - self.scaledWidth, self.y - self.height, self.scaledWidth, self.height))
