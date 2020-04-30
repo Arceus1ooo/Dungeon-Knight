@@ -26,13 +26,13 @@ class moveObj:
             self.alpha = 255
             s = pygame.Surface((25, 25))
             s.set_alpha(self.alpha)
-            s.fill(red)
+            s.fill(white)
             win.blit(s, (self.x, self.y))
         else:
             self.alpha = 0
             s = pygame.Surface((25, 25))
             s.set_alpha(self.alpha)
-            s.fill(red)
+            s.fill(white)
             win.blit(s, (self.x, self.y))
 
     def checkCollision(self, obj):
