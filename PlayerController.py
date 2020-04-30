@@ -50,7 +50,7 @@ class Player:
                 win.blit(walkLeft[0], (self.x, self.y))
             else:
                 win.blit(character, (self.x, self.y))
-        self.hitbox = (self.x, self.y, self.width, self.height)
+        self.hitbox = (self.x + 20, self.y + 16, 28, 50)
         pygame.draw.rect(win, red, self.hitbox, 1)
 
     def movement(self):
@@ -86,17 +86,19 @@ class Javelin:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.width = 5
+        self.height = 2
         self.position = (self.rect.x, self.rect.y)
         self.mousePos = mousePos
         self.visible = True
         self.direction = pygame.math.Vector2(self.mousePos[0] - self.rect.x, self.mousePos[1] - self.rect.y)
-        self.angle = 180 + (180 / math.pi) * math.atan2(self.direction.x, self.direction.y)
+        self.angle = (180 / math.pi) * math.atan2(self.direction.x, self.direction.y) + 180
         self.image = pygame.transform.rotate(self.image, int(self.angle))
         self.rect = self.image.get_rect(center=self.position)
 
     def redraw(self, win):
         self.direction = pygame.math.Vector2(self.mousePos[0] - self.rect.x, self.mousePos[1] - self.rect.y)
-        if math.fabs(self.direction.x) <= 8 and math.fabs(self.direction.y) <= 8:
+        if self.direction.x <= 2 and self.direction.y <= 2:
             self.visible = False
         else:
             self.direction.normalize()

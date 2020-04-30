@@ -64,7 +64,10 @@ def redrawWindow():
         e.moveTowardsPlayer(player)
     for e in enemies:
         if e.health == 0:
-            enemy_list.remove(Enemy)
+            enemy_list.remove(e)
+            e.kill()
+            window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
+            player.redraw(window)
     for javelin in javelins:
         javelin.redraw(window)
     for switch in roomSwitches:
@@ -100,6 +103,19 @@ while running:
                 mapX = switch.trigger(mapX)
                 player.y = switch.postTrigger(player.width, player.height)
             print("Map X: " + str(mapX) + ", Map Y: " + str(mapY))
+            
+    for javelin in javelins:
+        for e in enemy_list:
+            if (javelin.rect.x + javelin.width) > e.rect.x and javelin.rect.x < (e.rect.x + e.width):
+                if (javelin.rect.y + javelin.height) > e.rect.y and javelin.rect.y < (e.rect.y + e.height):
+                    e.health -= player.attack
+                    print(e.health)
+    for e in enemy_list:
+            if (e.rect.x + e.width) > player.x and e.rect.x < (player.x + player.width):
+                if (e.rect.y + e.height) > player.y and e.rect.y < (player.y + player.height):
+                    player.health -= e.attack
+                    print(player.health)
+        
 
     for block in movingBlocks:
         block.checkCollision(player)
