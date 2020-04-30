@@ -90,13 +90,13 @@ class Javelin:
         self.mousePos = mousePos
         self.visible = True
         self.direction = pygame.math.Vector2(self.mousePos[0] - self.rect.x, self.mousePos[1] - self.rect.y)
-        self.angle = (180 / math.pi) * math.atan2(self.direction.x, self.direction.y) + 180
+        self.angle = 180 + (180 / math.pi) * math.atan2(self.direction.x, self.direction.y)
         self.image = pygame.transform.rotate(self.image, int(self.angle))
         self.rect = self.image.get_rect(center=self.position)
 
     def redraw(self, win):
         self.direction = pygame.math.Vector2(self.mousePos[0] - self.rect.x, self.mousePos[1] - self.rect.y)
-        if self.direction.x <= 2 and self.direction.y <= 2:
+        if math.fabs(self.direction.x) <= 8 and math.fabs(self.direction.y) <= 8:
             self.visible = False
         else:
             self.direction.normalize()
