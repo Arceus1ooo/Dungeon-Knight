@@ -41,7 +41,9 @@ rightWall = Barricade(screenWidth - bottomRight.scaledWidth, topRight.y + topRig
                       topRight.scaledHeight + 40, gray, [room6, room1, room7, room8, room5, room3])
 bottomWall = Barricade(topLeft.x + topLeft.width, screenHeight - bottomRight.scaledHeight,
                        bottomLeft.scaledWidth + 135, topLeft.scaledHeight, gray, [room6, room7, room8, room3])
-walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWall, bottomWall]
+barrier11 = Barricade(300, 400, 325, 10, black, [room5])
+barrier12 = Barricade(335, 410, 10, 215, black, [room5])
+walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWall, bottomWall, barrier11, barrier12]
 
 block11 = moveObj(150, 250, 25, 25, [room5])
 block12 = moveObj(200, 250, 25, 25, [room5])
@@ -146,7 +148,8 @@ while running:
                 break  
     for wall in walls:
         wall.detectCollision(player)
-        wall.detectCollision(block)
+        for block in movingBlocks:
+            wall.detectCollision(block)
     for javelin in javelins:
         if javelin.visible is False:
             javelins.pop()
