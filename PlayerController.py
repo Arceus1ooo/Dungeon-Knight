@@ -52,7 +52,6 @@ class Player:
             else:
                 win.blit(character, (self.x, self.y))
         self.hitbox = (self.x + 20, self.y + 16, 28, 50)
-        pygame.draw.rect(win, red, self.hitbox, 1)
 
     def movement(self):
         keys = pygame.key.get_pressed()
