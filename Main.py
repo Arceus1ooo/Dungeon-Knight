@@ -13,6 +13,10 @@ pygame.init()
 timer = pygame.time.Clock()
 window = pygame.display.set_mode((screenWidth, screenHeight))
 pygame.display.set_caption("Dungeon Knight")
+pygame.mouse.set_visible(False)
+pointerImg = pygame.image.load('pointer.png')
+pointerImg = pygame.transform.scale(pointerImg, (50, 50))
+pointerRect = pointerImg.get_rect()
 
 # object instantiation
 player = Player(300, 300, 64, 64)
@@ -71,6 +75,7 @@ puzzles = [puzzle11, puzzle12, puzzle13, puzzle14, puzzle2, puzzle3, puzzle4, pu
 def redrawWindow():
     room = map[mapX][mapY]
     window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
+    window.blit(pointerImg, pointerRect)
     player.redraw(window)
     enemy_list.draw(window)
     if mapX == 1 and mapY == 1:
@@ -109,7 +114,8 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN and len(javelins) == 0:
             javelins.append(
                 Javelin(player.x + player.width / 2, player.y + player.height / 2, pygame.mouse.get_pos()))
-
+    mouse = pygame.mouse.get_pos()
+    pointerRect.topleft = (mouse[0] - 5, mouse[1] - 5)
     # Player collisions with room switches
     for switch in roomSwitches:
         switch.collision = switch.detectCollision(player)
@@ -120,7 +126,6 @@ while running:
             elif switch.direction == 'up' or switch.direction == 'down':
                 mapX = switch.trigger(mapX)
                 player.y = switch.postTrigger(player.width, player.height)
-            print("Map X: " + str(mapX) + ", Map Y: " + str(mapY))
             
     for javelin in javelins:
         for e in enemy_list:
