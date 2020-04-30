@@ -74,9 +74,9 @@ puzzles = [puzzle11, puzzle12, puzzle13, puzzle14, puzzle2, puzzle3, puzzle4, pu
 
 def redrawWindow():
     room = map[mapX][mapY]
-    window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
-    window.blit(pointerImg, pointerRect)
-    player.redraw(window)
+    for e in enemies:
+      if e.health > 0:
+        window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
     enemy_list.draw(window)
     if mapX == 1 and mapY == 1:
         enemy_list.add(yeti)
@@ -101,6 +101,8 @@ def redrawWindow():
         block.redraw(window, room)
     for wall in walls:
         wall.redraw(window, room)
+    window.blit(pointerImg, pointerRect)
+    player.redraw(window)
     pygame.display.update()  # This should always be last
 
 
