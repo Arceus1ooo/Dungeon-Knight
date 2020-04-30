@@ -43,11 +43,27 @@ bottomWall = Barricade(topLeft.x + topLeft.width, screenHeight - bottomRight.sca
                        bottomLeft.scaledWidth + 135, topLeft.scaledHeight, gray, [room6, room7, room8, room3])
 walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWall, bottomWall]
 
-block1 = moveObj(400, 400, 25, 25, [room5])
-movingBlocks = [block1]
+block11 = moveObj(150, 250, 25, 25, [room5])
+block12 = moveObj(200, 250, 25, 25, [room5])
+block13 = moveObj(550, 100, 25, 25, [room5])
+block2 = moveObj(300, 400, 25, 25, [room1])
+block3 = moveObj(300, 400, 25, 25, [room2])
+block4 = moveObj(300, 400, 25, 25, [room3])
+block5 = moveObj(300, 400, 25, 25, [room4])
+block6 = moveObj(300, 400, 25, 25, [room6])
+movingBlocks = [block11, block12, block13, block2, block3, block4, block5, block6]
 
-puzzle1 = puzzle(400, 150, 10, 70, 100, 200, [room5])
-puzzles = [puzzle1]
+puzzle11 = puzzle(300, 100, 10, 300, 100, 200, [room5])
+puzzle12 = puzzle(600, 100, 10, 300, 300, 500, [room5])
+puzzle13 = puzzle(100, 400, 200, 10, 550, 300, [room5])
+puzzle14 = puzzle(390, 645, 200, 10, 325, 100, [room5])
+puzzle2 = puzzle(400, 150, 10, 70, 100, 200, [room1])
+puzzle3 = puzzle(400, 150, 10, 70, 100, 200, [room2])
+puzzle4 = puzzle(400, 150, 10, 70, 100, 200, [room3])
+puzzle5 = puzzle(400, 150, 10, 70, 100, 200, [room4])
+puzzle6 = puzzle(400, 150, 10, 70, 100, 200, [room6])
+puzzles = [puzzle11, puzzle12, puzzle13, puzzle14, puzzle2, puzzle3, puzzle4, puzzle5, puzzle6]
+
 
 
 def redrawWindow():
@@ -126,7 +142,8 @@ while running:
     for p in puzzles:
         p.buttonPress(player)
         for block in movingBlocks:
-            p.buttonPress(block)
+            if p.buttonPress(block):
+                break  
     for wall in walls:
         wall.detectCollision(player)
         wall.detectCollision(block)
