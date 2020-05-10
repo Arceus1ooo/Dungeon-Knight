@@ -71,12 +71,11 @@ puzzle6 = puzzle(400, 150, 10, 70, 100, 200, [room6])
 puzzles = [puzzle11, puzzle12, puzzle13, puzzle14, puzzle2, puzzle3, puzzle4, puzzle5, puzzle6]
 
 
-
 def redrawWindow():
     room = map[mapX][mapY]
     for e in enemies:
-      if e.health > 0:
-        window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
+        if e.health > 0:
+            window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
     enemy_list.draw(window)
     if mapX == 1 and mapY == 1:
         enemy_list.add(yeti)
@@ -128,19 +127,22 @@ while running:
             elif switch.direction == 'up' or switch.direction == 'down':
                 mapX = switch.trigger(mapX)
                 player.y = switch.postTrigger(player.width, player.height)
-            
+
     for javelin in javelins:
         for e in enemy_list:
-            if (javelin.rect.x + javelin.width) > e.rect.x and javelin.rect.x < (e.rect.x + e.width):
-                if (javelin.rect.y + javelin.height) > e.rect.y and javelin.rect.y < (e.rect.y + e.height):
-                    e.health -= player.attack
-                    #print(e.health)
+            if javelin.detectCollision(e):
+                e.health -= player.attack
+                javelin.visible = False
+                # print(e.health)
+        for w in walls:
+            if w.detectRectCollision(javelin):
+                javelin.visible = False
+
     for e in enemy_list:
-            if (e.rect.x + e.width) > player.x and e.rect.x < (player.x + player.width):
-                if (e.rect.y + e.height) > player.y and e.rect.y < (player.y + player.height):
-                    player.health -= e.attack
-                    #print(player.health)
-        
+        if (e.rect.x + e.width) > player.x and e.rect.x < (player.x + player.width):
+            if (e.rect.y + e.height) > player.y and e.rect.y < (player.y + player.height):
+                player.health -= e.attack
+                # print(player.health)
 
     for block in movingBlocks:
         block.checkCollision(player)
@@ -152,7 +154,7 @@ while running:
         p.buttonPress(player)
         for block in movingBlocks:
             if p.buttonPress(block):
-                break  
+                break
     for wall in walls:
         wall.detectCollision(player)
         for block in movingBlocks:
@@ -170,7 +172,7 @@ while running:
                 elif player.direction == 'left':
                     player.x += player.speed
                 else:
-                    player.x -= player.speed    
+                    player.x -= player.speed
     player.movement()
     redrawWindow()
 
