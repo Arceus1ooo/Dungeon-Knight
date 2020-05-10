@@ -117,6 +117,7 @@ while running:
                 Javelin(player.x + player.width / 2, player.y + player.height / 2, pygame.mouse.get_pos()))
     mouse = pygame.mouse.get_pos()
     pointerRect.topleft = (mouse[0] - 5, mouse[1] - 5)
+    
     # Player collisions with room switches
     for switch in roomSwitches:
         switch.collision = switch.detectCollision(player)
@@ -162,17 +163,7 @@ while running:
     for javelin in javelins:
         if javelin.visible is False:
             javelins.pop()
-    for x, y, width, height in bottomLeft.components:
-        if (x + width) > player.x and x < (player.x + player.width):
-            if (y + height) > player.y and y < (player.y + player.height):
-                if player.direction == 'up':
-                    player.y += player.speed
-                elif player.direction == 'down':
-                    player.y -= player.speed
-                elif player.direction == 'left':
-                    player.x += player.speed
-                else:
-                    player.x -= player.speed
+
     player.movement()
     redrawWindow()
 
