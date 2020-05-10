@@ -82,11 +82,9 @@ def redrawWindow():
         enemy_list.draw(window)
     else:
         enemy_list.remove(yeti)
-    for e in enemy_list:
-        e.moveTowardsPlayer(player)
     for e in enemies:
+        e.moveTowardsPlayer(player)
         if e.health == 0:
-            enemy_list.remove(e)
             e.kill()
             window.blit(pygame.image.load(map[mapX][mapY]), (0, 0))
             player.redraw(window)
