@@ -2,17 +2,41 @@ import pygame
 from GlobalVariables import *
 
 
-class LWall:
-    def __init__(self, x, y, width, height, widthScale, heightScale, location):
+class Wall:
+    def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
+
+    def detectCollision(self, player):
+        if (self.x + self.width) > player.x and self.x < (player.x + player.width):
+            if (self.y + self.height) > player.y and self.y < (player.y + player.height):
+                if player.direction == 'up':
+                    player.y += player.speed
+                elif player.direction == 'down':
+                    player.y -= player.speed
+                elif player.direction == 'left':
+                    player.x += player.speed
+                else:
+                    player.x -= player.speed
+        else:
+            return False
+
+    def detectRectCollision(self, sprite):
+        if (self.x + self.width) > sprite.rect.x and self.x < (sprite.rect.x + sprite.width):
+            if (self.y + self.height) > sprite.rect.y and self.y < (sprite.rect.y + sprite.height):
+                return True
+        else:
+            return False
+
+
+class LWall(Wall):
+    def __init__(self, x, y, width, height, widthScale, heightScale, location):
+        super().__init__(x, y, width, height)
         self.scaledWidth = width * widthScale
         self.scaledHeight = height * heightScale
         self.location = location
-        self.position = (self.x, self.y)
-        self.visible = True
         self.components = []
         if self.location == 'topLeft':
             self.components.append((self.x, self.y, self.width, self.scaledHeight))
@@ -21,15 +45,15 @@ class LWall:
             self.components.append((self.x - self.width, self.y, self.width, self.scaledHeight))
             self.components.append((self.x - self.scaledWidth, self.y, self.scaledWidth, self.height))
         elif self.location == 'bottomLeft':
-            self.components.append((self.x, self.y - self.height, self.scaledWidth, self.height))
             self.components.append((self.x, self.y - self.scaledHeight, self.width, self.scaledHeight))
+            self.components.append((self.x, self.y - self.height, self.scaledWidth, self.height))
         else:
             self.components.append((self.x - self.width, self.y - self.scaledHeight, self.width, self.scaledHeight))
             self.components.append((self.x - self.scaledWidth, self.y - self.height, self.scaledWidth, self.height))
 
     def redraw(self, win, void):
         for component in self.components:
-            pygame.draw.rect(win, gray, component, 1)
+            pygame.draw.rect(win, white, component, 1)
 
     def detectCollision(self, player):
         for x, y, width, height in self.components:
@@ -56,30 +80,13 @@ class LWall:
                 return False
 
 
-class Barricade:
+class Barricade(Wall):
     def __init__(self, x, y, width, height, color, rooms):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+        super().__init__(x, y, width, height)
         self.color = color
         self.rooms = rooms
         self.existence = 0
         self.position = (self.x, self.y)
-
-    def detectCollision(self, player):
-        if (self.x + self.width) > player.x and self.x < (player.x + player.width):
-            if (self.y + self.height) > player.y and self.y < (player.y + player.height):
-                if player.direction == 'up':
-                    player.y += player.speed
-                elif player.direction == 'down':
-                    player.y -= player.speed
-                elif player.direction == 'left':
-                    player.x += player.speed
-                else:
-                    player.x -= player.speed
-        else:
-            return False
 
     def redraw(self, win, mapRoom):
         self.existence = 0
@@ -93,10 +100,3 @@ class Barricade:
         else:
             self.x = -1000
             self.y = -1000
-
-    def detectRectCollision(self, sprite):
-        if (self.x + self.width) > sprite.rect.x and self.x < (sprite.rect.x + sprite.width):
-            if (self.y + self.height) > sprite.rect.y and self.y < (sprite.rect.y + sprite.height):
-                return True
-        else:
-            return False
