@@ -110,3 +110,10 @@ class Javelin:
             self.direction.scale_to_length(self.speed)
             self.rect.move_ip(self.direction)
             win.blit(self.image, (self.rect.x, self.rect.y))
+
+    def detectCollision(self, sprite):
+        if (self.rect.x + self.width) > sprite.rect.x and self.rect.x < (sprite.rect.x + sprite.width):
+            if (self.rect.y + self.height) > sprite.rect.y and self.rect.y < (sprite.rect.y + sprite.height):
+                return True
+        else:
+            return False
