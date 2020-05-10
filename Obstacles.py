@@ -47,6 +47,14 @@ class LWall:
             else:
                 return False
 
+    def detectRectCollision(self, sprite):
+        for x, y, width, height in self.components:
+            if (x + width) > sprite.rect.x and x < (sprite.rect.x + sprite.width):
+                if (y + height) > sprite.rect.y and y < (sprite.rect.y + sprite.height):
+                    return True
+            else:
+                return False
+
 
 class Barricade:
     def __init__(self, x, y, width, height, color, rooms):
@@ -85,3 +93,10 @@ class Barricade:
         else:
             self.x = -1000
             self.y = -1000
+
+    def detectRectCollision(self, sprite):
+        if (self.x + self.width) > sprite.rect.x and self.x < (sprite.rect.x + sprite.width):
+            if (self.y + self.height) > sprite.rect.y and self.y < (sprite.rect.y + sprite.height):
+                return True
+        else:
+            return False
