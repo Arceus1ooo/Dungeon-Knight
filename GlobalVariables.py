@@ -12,6 +12,7 @@ blue = (0, 0, 255)
 white = (255, 255, 255)
 black = (0, 0, 0)
 gray = (100, 100, 100)
+brown = (90, 39, 41)
 
 # Map Initialization
 mainRoom = 'rooms/MainRoom.jpg'
