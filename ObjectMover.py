@@ -15,7 +15,7 @@ class moveObj:
         self.position = (self.x, self.y)
         self.existence = 0
         self.speed = 2
-        self.color = white
+        self.color = brown
 
     def redraw(self, win, mapRoom):
         self.existence = 0
@@ -25,7 +25,7 @@ class moveObj:
         if self.existence > 0:
             self.x = self.position[0]
             self.y = self.position[1]
-            pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 1)
+            pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 0)
         else:
             self.x = -1000
             self.y = -1000
