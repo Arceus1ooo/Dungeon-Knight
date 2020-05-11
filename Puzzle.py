@@ -22,7 +22,7 @@ class puzzle:
     def wallCollision(self, sprite):
         if (self.x + self.width) > sprite.x and self.x < (sprite.x + sprite.width):
             if (self.y + self.height) > sprite.y and self.y < (sprite.y + sprite.height):
-                if self.alpha == 255 and self.not_press == 1:
+                if self.existence > 0 and self.not_press == 1:
                     if sprite.direction == 'up':
                         sprite.y += sprite.speed
                     elif sprite.direction == 'down':
@@ -31,6 +31,7 @@ class puzzle:
                         sprite.x += sprite.speed
                     else:
                         sprite.x -= sprite.speed
+                    return True
         else:
             return False
 
@@ -61,14 +62,15 @@ class puzzle:
             win.blit(b, (self.x_button, self.y_button))
 
     def buttonPress(self, sprite):
-        if sprite.alpha == 255:
+        if sprite.existence > 0:
             if (self.x_button + 30) > sprite.x and self.x_button < (sprite.x + sprite.width):
                 if (self.y_button + 30) > sprite.y and self.y_button < (sprite.y + sprite.height):
-                    if self.alpha == 255:
+                    if self.existence > 0:
                         self.not_press = 0
                         return True
             else:
                 self.not_press = 1
+                return False
 
 
    

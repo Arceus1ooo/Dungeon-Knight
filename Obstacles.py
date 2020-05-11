@@ -8,6 +8,7 @@ class Wall:
         self.y = y
         self.width = width
         self.height = height
+        self.alpha = 255
 
     def detectCollision(self, player):
         if (self.x + self.width) > player.x and self.x < (player.x + player.width):
@@ -38,6 +39,7 @@ class LWall(Wall):
         self.scaledHeight = height * heightScale
         self.location = location
         self.components = []
+        self.alpha = 255
         if self.location == 'topLeft':
             self.components.append((self.x, self.y, self.width, self.scaledHeight))
             self.components.append((self.x, self.y, self.scaledWidth, self.height))
@@ -59,15 +61,16 @@ class LWall(Wall):
         for x, y, width, height in self.components:
             if (x + width) > player.x and x < (player.x + player.width):
                 if (y + height) > player.y and y < (player.y + player.height):
-                    if player.direction == 'up':
-                        player.y += player.speed
-                    elif player.direction == 'down':
-                        player.y -= player.speed
-                    elif player.direction == 'left':
-                        player.x += player.speed
-                    else:
-                        player.x -= player.speed
-                    return True
+                    if player.existence > 0:
+                        if player.direction == 'up':
+                            player.y += player.speed
+                        elif player.direction == 'down':
+                            player.y -= player.speed
+                        elif player.direction == 'left':
+                            player.x += player.speed
+                        else:
+                            player.x -= player.speed
+                        return True
             else:
                 return False
 
@@ -75,6 +78,14 @@ class LWall(Wall):
         for x, y, width, height in self.components:
             if (x + width) > sprite.rect.x and x < (sprite.rect.x + sprite.width):
                 if (y + height) > sprite.rect.y and y < (sprite.rect.y + sprite.height):
+                    if sprite.rect.direction == 'up':
+                        sprite.rect.y += sprite.rect.speed
+                    elif sprite.rect == 'down':
+                        sprite.rect.y -= sprite.rect.speed
+                    elif sprite.rect.direction == 'left':
+                        sprite.rect.x += sprite.rect.speed
+                    else:
+                        sprite.rect.x -= sprite.rect.speed
                     return True
             else:
                 return False

@@ -48,27 +48,26 @@ bottomWall = Barricade(topLeft.x + topLeft.width, screenHeight - bottomRight.sca
 barrier11 = Barricade(300, 400, 325, 10, black, [room5])
 barrier12 = Barricade(335, 410, 10, 215, black, [room5])
 walls = [topLeft, topRight, bottomLeft, bottomRight, leftWall, topWall, rightWall, bottomWall, barrier11, barrier12]
+barriers = [leftWall, topWall, rightWall, bottomWall, barrier11, barrier12]
 
-block11 = moveObj(150, 250, 25, 25, [room5])
-block12 = moveObj(200, 250, 25, 25, [room5])
-block13 = moveObj(550, 100, 25, 25, [room5])
-block2 = moveObj(300, 400, 25, 25, [room1])
-block3 = moveObj(300, 400, 25, 25, [room2])
-block4 = moveObj(300, 400, 25, 25, [room3])
-block5 = moveObj(300, 400, 25, 25, [room4])
-block6 = moveObj(300, 400, 25, 25, [room6])
-movingBlocks = [block11, block12, block13, block2, block3, block4, block5, block6]
+block51 = moveObj(150, 250, 25, 25, [room5])
+block52 = moveObj(200, 250, 25, 25, [room5])
+block53 = moveObj(550, 100, 25, 25, [room5])
+block2 = moveObj(300, 400, 25, 25, [room2])
+block4 = moveObj(400, 400, 25, 25, [room4])
+movingBlocks = [block51, block52, block53, block2, block4]
 
-puzzle11 = puzzle(300, 100, 10, 300, 100, 200, [room5])
-puzzle12 = puzzle(600, 100, 10, 300, 300, 500, [room5])
-puzzle13 = puzzle(100, 400, 200, 10, 550, 300, [room5])
-puzzle14 = puzzle(390, 645, 200, 10, 325, 100, [room5])
-puzzle2 = puzzle(400, 150, 10, 70, 100, 200, [room1])
-puzzle3 = puzzle(400, 150, 10, 70, 100, 200, [room2])
-puzzle4 = puzzle(400, 150, 10, 70, 100, 200, [room3])
-puzzle5 = puzzle(400, 150, 10, 70, 100, 200, [room4])
-puzzle6 = puzzle(400, 150, 10, 70, 100, 200, [room6])
-puzzles = [puzzle11, puzzle12, puzzle13, puzzle14, puzzle2, puzzle3, puzzle4, puzzle5, puzzle6]
+puzzle51 = puzzle(300, 100, 10, 300, 100, 200, [room5])
+puzzle52 = puzzle(600, 100, 10, 300, 300, 500, [room5])
+puzzle53 = puzzle(100, 400, 200, 10, 550, 300, [room5])
+puzzle54 = puzzle(390, 645, 200, 10, 325, 100, [room5])
+
+puzzle41 = puzzle(390, 100, 200, 10, 100, 500, [room4])
+puzzle42 = puzzle(390, 625, 200, 10, 100, 200, [room4])
+
+puzzle2 = puzzle(880, 250, 10, 130, 100, 200, [room2])
+
+puzzles = [puzzle51, puzzle52, puzzle53, puzzle54, puzzle41, puzzle42, puzzle2]
 
 
 def redrawWindow():
@@ -148,7 +147,11 @@ while running:
     for w in puzzles:
         w.wallCollision(player)
         for block in movingBlocks:
-            w.wallCollision(block)
+            block.collisionBlock(w)
+    for bar in barriers:
+        for block in movingBlocks:
+            block.collisionBlock(bar)
+    
     for p in puzzles:
         p.buttonPress(player)
         for block in movingBlocks:
